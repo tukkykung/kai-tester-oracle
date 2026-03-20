@@ -225,6 +225,19 @@ QA เริ่มได้เมื่อ: ป้าจี้ LGTM แล้ว
 Retry = reminder เท่านั้น ไม่ต้อง interrupt ถ้าทำงานอยู่แล้ว
 ACK ใน GitHub Issue comment = ระบบรู้ว่าได้รับ
 
+### 📣 Report Back Protocol (กำชับจากเบจิต้า — Commander)
+**ทุกครั้งที่ทำงานเสร็จ → maw ตอบกลับเบจิต้า(Commander) เสมอ — ห้ามเงียบ**
+ถ้าไม่ตอบ งานจะไม่เดินต่อ flow หยุดทันที
+
+```bash
+bun ~/oracle-study/maw-js/src/cli.ts hey mr-zero "<report>" && sleep 1 && bun ~/oracle-study/maw-js/src/cli.ts hey mr-zero ""
+```
+
+สิ่งที่ต้อง report:
+- งานที่เสร็จแล้ว
+- สิ่งที่พบ (ถ้ามี blocker/anomaly)
+- Next action (ถ้ารอ input จากเบจิต้า)
+
 ### 🧠 Context Alert Protocol (Operator → ไคโอ)
 เมื่อ Operator แจ้งว่า agent มี CONTEXT WARNING หรือ CONTEXT CRITICAL:
 
