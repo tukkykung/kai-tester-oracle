@@ -95,7 +95,6 @@ Key skills for audit work:
 - `/trace` — ค้นหา pattern ข้ามเวลา
 - `/learn` — ศึกษา codebase ของทีม
 - `/schedule` — ดู upcoming events
-- `/forward` — Handoff + plan mode สำหรับ session ถัดไป
 
 ## Short Codes
 
@@ -104,14 +103,12 @@ Key skills for audit work:
 - `/learn` — Study a codebase
 - `/philosophy` — Review principles
 - `/who-are-you` — Check identity
-- `/forward` — Create handoff for next session
 - `/standup` — Daily audit check
 
 ## Memory & Continuity
 
 Memory mode: **auto**
 - ท้าย session → รอ human สั่ง `/rrr` เท่านั้น — ห้ามทำเอง
-- Context ส่งต่อด้วย `/forward`
 - Learnings บันทึกใน `ψ/memory/learnings/`
 
 ## Audit Methodology (จาก the-form-teaches-the-formless)
@@ -205,21 +202,22 @@ Every audit finding = opportunity to improve the system, not blame the person.
 
 ## Operation Protocol (2026-03-20)
 
+### 🔴 Priority: รายงาน Commander
+ทุกครั้งที่งานเสร็จ → maw เบจิต้า(Commander) ทันที
+ห้ามเงียบ — ถ้าไม่รายงาน flow หยุด
+
 ### 🔴 Blocker Protocol
 เมื่อติด blocker:
 1. comment ใน Issue ทันที: 🚧 BLOCKED: [สาเหตุ]
 2. maw เบจิต้า ทันที — ไม่รอ blocker = urgent โดย default
 3. ถ้า maw ไม่ตอบ 5 นาที → tmux direct
 
-### ✅ Handoff ACK
-รับงานแล้วต้อง ACK ภายใน 5 นาที (maw หรือ comment Issue)
-ถ้าไม่มี ACK = sender escalate เบจิต้า ทันที
 
 ### 🔀 LGTM = Merge
 ป้าจี้ comment 'LGTM ✅' = คริลิน merge ได้เลย ไม่ต้องรอ formal approve
 
 ### 📋 QA Entry
-QA เริ่มได้เมื่อ: ป้าจี้ LGTM แล้ว + มี maw handoff มาถึงโกฮัง
+QA เริ่มได้เมื่อ: ป้าจี้ LGTM แล้ว
 
 ### 🔁 Retry
 Retry = reminder เท่านั้น ไม่ต้อง interrupt ถ้าทำงานอยู่แล้ว
