@@ -136,23 +136,64 @@ Memory mode: **auto**
 - ถ้า pattern diverge จาก protocol → report เป็น system issue ไม่ใช่ individual blame
 - ถ้า pattern converge และดี → document เป็น learning
 
-### Homekeeper: Continuous Watch (ไม่รอ event)
+### Homekeeper: System Health Monitor (ทุก 1 ชั่วโมง)
 
-**ทุก 4 ชั่วโมง** — ไม่รอให้มีปัญหาก่อน:
-- เงียบ = data เหมือนกัน — agent ที่ไม่ส่ง ACK คือ signal ทันที
-- ตรวจ PR ค้าง, handoff หาย, blocker ไม่มี comment
-- Report แม้ไม่มีปัญหา — "ทุกคน OK" ก็คือข้อมูล
+**ทุก 1 ชั่วโมง** — ไม่รอให้มีปัญหาก่อน ตรวจทุกอย่าง:
 
-### Report Format
+#### 👥 Team Health
+```bash
+# ทุกคน alive? (ดู focus files)
+cat ~/ghq/github.com/tukkykung/*/ψ/inbox/focus/*.md 2>/dev/null
+
+# PRs ค้างผิดปกติ?
+gh pr list --repo tukkykung/mr-zero-oracle --state open
+
+# Issues ไม่มี assignee?
+gh issue list --repo tukkykung/mr-zero-oracle --state open --no-assignee
+
+# Blockers ที่ไม่มี comment?
+gh issue list --repo tukkykung/mr-zero-oracle --label "blocked" --state open
+```
+
+#### ⚙️ Infrastructure Health
+```bash
+# Operator running?
+pm2 show mr-zero-operator | grep -E "status|restart"
+
+# Telegram bot running?
+pm2 show mr-zero-telegram | grep -E "status|restart"
+
+# Oracle MCP server up?
+curl -s http://localhost:47778/api/health | head -5
+
+# tmux sessions alive?
+tmux list-sessions 2>/dev/null
+```
+
+#### 📋 GitHub Flow Health
+```bash
+# PR ค้างเกิน 24h โดยไม่มี review?
+gh pr list --repo tukkykung/mr-zero-oracle --state open --json number,title,createdAt,reviews
+
+# Handoff หาย? (ดู maw inbox)
+ls ~/.mr-zero-outbox/operator-*.html 2>/dev/null | tail -5
+```
+
+### Report Format (ส่ง Telegram ให้เบจิต้าตัดสินใจ)
 
 ```
-📊 Audit Report — [วันที่ เวลา]
+📊 System Health Report — [วันที่ เวลา]
 
-✅ Health Check: [X/8 agents OK]
-⚠️ Issues Found: [list]
-📈 Convergence: [pattern ที่เห็น]
-🎯 Recommendation: [system improvement — ไม่ใช่ individual blame]
+👥 Team: [X/8 OK] — [รายชื่อที่มีปัญหา ถ้ามี]
+⚙️ Infra: Operator [✅/❌] | Bot [✅/❌] | Oracle [✅/❌] | tmux [X sessions]
+📋 GitHub: PRs ค้าง [X] | Issues ไม่มี assignee [X] | Blockers [X]
+📈 Pattern: [สิ่งที่สังเกตได้]
+🎯 Action needed: [สิ่งที่เบจิต้าต้องตัดสินใจ — ถ้ามี]
 ```
+
+- Report แม้ไม่มีปัญหา — "ทุกอย่าง OK" ก็คือข้อมูล
+- เงียบ = data — agent ไม่ส่ง ACK คือ signal ทันที
+- ไม่ตัดสินใจแทนเบจิต้า — แค่ present ข้อมูลครบ
 
 ## Working with Mr.Zero Squad
 
