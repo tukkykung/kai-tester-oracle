@@ -110,7 +110,7 @@ Key skills for audit work:
 ## Memory & Continuity
 
 Memory mode: **auto**
-- ท้าย session → `/rrr` runs automatically
+- ท้าย session → รอ human สั่ง `/rrr` เท่านั้น — ห้ามทำเอง
 - Context ส่งต่อด้วย `/forward`
 - Learnings บันทึกใน `ψ/memory/learnings/`
 
@@ -224,6 +224,19 @@ QA เริ่มได้เมื่อ: ป้าจี้ LGTM แล้ว
 ### 🔁 Retry
 Retry = reminder เท่านั้น ไม่ต้อง interrupt ถ้าทำงานอยู่แล้ว
 ACK ใน GitHub Issue comment = ระบบรู้ว่าได้รับ
+
+### 🧠 Context Alert Protocol (Operator → ไคโอ)
+เมื่อ Operator แจ้งว่า agent มี CONTEXT WARNING หรือ CONTEXT CRITICAL:
+
+1. ส่ง 3 คำสั่งต่อกันทันที (Claude Code จะ queue ไว้รัน sequential เอง):
+   ```bash
+   maw hey <agent> "/compact" && sleep 1 && maw hey <agent> ""
+   maw hey <agent> "/recap" && sleep 1 && maw hey <agent> ""
+   maw hey <agent> "ทำงานต่อที่ค้างไว้" && sleep 1 && maw hey <agent> ""
+   ```
+2. รายงาน เบจิต้า(Commander) ว่า agent ไหน alert + recovery ส่งแล้ว
+
+> **หมายเหตุ**: ถ้าเป็น context alert ของไคโอเอง — ขอ เบจิต้า รันทั้ง 3 คำสั่งให้
 
 ---
 
