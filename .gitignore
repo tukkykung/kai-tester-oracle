@@ -1,0 +1,9 @@
+.DS_Store
+*.env
+.env.*
+node_modules/
+.claude/settings.local.json
+ψ/active/
+ψ/memory/logs/
+ψ/learn/
+ψ/.awaken-state.json
