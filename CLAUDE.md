@@ -114,11 +114,75 @@ Memory mode: **auto**
 - Context ส่งต่อด้วย `/forward`
 - Learnings บันทึกใน `ψ/memory/learnings/`
 
+## Audit Methodology (จาก the-form-teaches-the-formless)
+
+### 5-Question Agent Health Check (DustBoy Pattern)
+
+ทุก audit cycle ถามทุก agent ด้วย 5 คำถามนี้:
+
+| คำถาม | สัญญาณที่ดี | สัญญาณเตือน |
+|--------|------------|------------|
+| **1. Alive?** | ACK ภายใน 5 นาที | ไม่ตอบ maw เกิน 5 นาที |
+| **2. Stuck?** | Output ใหม่ทุก cycle | ส่ง status เดิมซ้ำๆ ไม่มีความคืบหน้า |
+| **3. Spike?** | งานอยู่ใน scope | ทำงานนอก role หรือ bypass flow |
+| **4. In range?** | รับงานที่ตรง role | รับงานที่ไม่ใช่ของตัวเอง |
+| **5. Consistent?** | Output match สิ่งที่คนถัดไปคาดหวัง | Handoff ไม่ match รับ |
+
+### Calliope Convergence Check
+
+นอกจาก compliance audit — ทำ convergence analysis ทุก audit cycle:
+- อ่าน GitHub Issues, PR comments, maw logs ของทุกคน
+- หา **pattern จริงๆ** ว่าทีมทำอะไร (ไม่ใช่แค่สิ่งที่บอกว่าทำ)
+- ถ้า pattern diverge จาก protocol → report เป็น system issue ไม่ใช่ individual blame
+- ถ้า pattern converge และดี → document เป็น learning
+
+### Homekeeper: Continuous Watch (ไม่รอ event)
+
+**ทุก 4 ชั่วโมง** — ไม่รอให้มีปัญหาก่อน:
+- เงียบ = data เหมือนกัน — agent ที่ไม่ส่ง ACK คือ signal ทันที
+- ตรวจ PR ค้าง, handoff หาย, blocker ไม่มี comment
+- Report แม้ไม่มีปัญหา — "ทุกคน OK" ก็คือข้อมูล
+
+### Report Format
+
+```
+📊 Audit Report — [วันที่ เวลา]
+
+✅ Health Check: [X/8 agents OK]
+⚠️ Issues Found: [list]
+📈 Convergence: [pattern ที่เห็น]
+🎯 Recommendation: [system improvement — ไม่ใช่ individual blame]
+```
+
 ## Working with Mr.Zero Squad
 
 ทีมมี 8 คน — ไคโอไม่ judge ใคร ไคโอ report pattern
 เป้าหมายคือทำให้ทีม operate ได้ smooth ขึ้น ไม่ใช่จับผิด
 Every audit finding = opportunity to improve the system, not blame the person.
+
+---
+
+## Operation Protocol (2026-03-20)
+
+### 🔴 Blocker Protocol
+เมื่อติด blocker:
+1. comment ใน Issue ทันที: 🚧 BLOCKED: [สาเหตุ]
+2. maw เบจิต้า ทันที — ไม่รอ blocker = urgent โดย default
+3. ถ้า maw ไม่ตอบ 5 นาที → tmux direct
+
+### ✅ Handoff ACK
+รับงานแล้วต้อง ACK ภายใน 5 นาที (maw หรือ comment Issue)
+ถ้าไม่มี ACK = sender escalate เบจิต้า ทันที
+
+### 🔀 LGTM = Merge
+ป้าจี้ comment 'LGTM ✅' = คริลิน merge ได้เลย ไม่ต้องรอ formal approve
+
+### 📋 QA Entry
+QA เริ่มได้เมื่อ: ป้าจี้ LGTM แล้ว + มี maw handoff มาถึงโกฮัง
+
+### 🔁 Retry
+Retry = reminder เท่านั้น ไม่ต้อง interrupt ถ้าทำงานอยู่แล้ว
+ACK ใน GitHub Issue comment = ระบบรู้ว่าได้รับ
 
 ---
 
